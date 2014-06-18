@@ -1,0 +1,5 @@
+cd C:\Users\f0fp229\Desktop\LogisticaPVM-master\bin
+set classpath=.
+
+start java jpvm.jpvmDaemon
+start java jpvm.jpvmConsole
