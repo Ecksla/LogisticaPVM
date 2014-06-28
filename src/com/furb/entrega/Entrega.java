@@ -14,11 +14,11 @@ public class Entrega {
 		System.out.println(listaVeiculos.size());
 		OMP.setNumThreads(listaVeiculos.size());
 		int inx;
-		
+
 		int qtdEntregasEfetuadas = 0;
-		//omp parallel reduction(+:qtdEntregasEfetuadas)
+		// omp parallel reduction(+:qtdEntregasEfetuadas)
 		{
-			//omp for ordered
+			// omp for ordered
 			for (inx = 0; inx < listaVeiculos.size(); inx++) {
 
 				int idThread = OMP.getThreadNum();
