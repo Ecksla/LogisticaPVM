@@ -28,8 +28,8 @@ public enum EnAlgoritimo {
 	public static EnAlgoritimo ObterPorCodigo(int cod){
 		EnAlgoritimo result = null;
 		for (int i = 0; i < EnAlgoritimo.values().length; i++) {
-			if(EnAlgoritimo.values()[1].GetCodigo() == cod){
-				result = EnAlgoritimo.values()[1];
+			if(EnAlgoritimo.values()[i].GetCodigo() == cod){
+				result = EnAlgoritimo.values()[i];
 				break;
 			}
 		}

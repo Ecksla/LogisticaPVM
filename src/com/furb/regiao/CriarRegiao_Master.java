@@ -9,7 +9,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
-import jomp.runtime.OMP;
 import jpvm.jpvmBuffer;
 import jpvm.jpvmEnvironment;
 import jpvm.jpvmException;
@@ -48,7 +47,6 @@ public class CriarRegiao_Master {
 
 			for (int i = 0; i < EnAlgoritimo.values().length; i++) {
 				jpvmBuffer buf = new jpvmBuffer();
-				// byte[] arrayByte = RegiaoUtil.PedidosToArrayByte(pedidos);
 				byte[] arrayByte = SerializationUtils
 						.ObjectArrayToByteArray(pedidos);
 				int asdf = arrayByte.length;
@@ -71,10 +69,9 @@ public class CriarRegiao_Master {
 			for (int i = 0; i < tids.length; i++) {
 				// recebe uma mensagem...
 				jpvmMessage message = jpvm.pvm_recv();
-				String msg = message.buffer.upkstr();
-				byte[] byteArray = null;
+				byte[] byteArray = new byte[message.messageTag];
 
-				message.buffer.unpack(byteArray, 0, 1);
+				message.buffer.unpack(byteArray, byteArray.length, 1);
 
 				switch (EnAlgoritimo.GetByIndex(i)) {
 				case KMeans:
@@ -84,7 +81,6 @@ public class CriarRegiao_Master {
 				case Weka:
 					dsWeka = (Dataset[]) SerializationUtils
 							.ByteArrayToObject(byteArray);
-
 					break;
 				default:
 					dsKMeans = (Dataset[]) SerializationUtils

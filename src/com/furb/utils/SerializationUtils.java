@@ -48,7 +48,7 @@ public class SerializationUtils {
 		try {
 			out = new ObjectOutputStream(bos);
 			for (int i = 0; i < xy.length; i++) {
-				out.writeObject(xy[1]);
+				out.writeObject(xy[i]);
 			}
 			
 			result = bos.toByteArray();

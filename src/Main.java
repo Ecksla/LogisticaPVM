@@ -11,11 +11,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
-import jomp.runtime.OMP;
-
-import com.furb.entrega.Entrega_jomp;
-import com.furb.entrega.ui.OpcoesEntrada;
-import com.furb.frete.CalcularFrete;
 import com.furb.frota.CalcularFrota_Master;
 import com.furb.pedido.Pedido;
 import com.furb.pedido.PedidoUtil;
@@ -62,7 +57,7 @@ public class Main {
 				case 3:
 					break;
 				case 4:
-					new OpcoesEntrada();
+					//new OpcoesEntrada();
 					break;
 				case 666:
 					sair = true;

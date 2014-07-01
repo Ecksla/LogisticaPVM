@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="Utils/javaml-0.1.7.jar"/>
 	<classpathentry kind="lib" path="Utils/jcommon-1.0.21.jar"/>
 	<classpathentry kind="lib" path="Utils/jfreechart-1.0.17.jar"/>
-	<classpathentry kind="lib" path="Utils/jomp1.0b.jar"/>
 	<classpathentry kind="lib" path="Utils/jxl.jar"/>
 	<classpathentry kind="lib" path="Utils/weka.jar"/>
 	<classpathentry kind="output" path="bin"/>

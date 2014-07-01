@@ -3,8 +3,13 @@ package com.furb.regiao;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
+
+import javax.swing.JOptionPane;
 
 import jpvm.*;
 import net.sf.javaml.clustering.Clusterer;
@@ -49,8 +54,6 @@ class FormarRegioes_Slave {
 
 			byte[] pedidosBytes = RegiaoUtil.PedidosToArrayByte(pedidos);
 
-			jpvm.pvm_send(buf1, parent, new int[2]);
-
 			InputStream inPedidos = new ByteArrayInputStream(pedidosBytes);
 
 			EnAlgoritimo algoritmo = EnAlgoritimo.ObterPorCodigo(tags[0]);
@@ -60,7 +63,6 @@ class FormarRegioes_Slave {
 				clusters = RegiaoUtil.CriarRegiaoKMeans(inPedidos, tags[1]);
 				break;
 			case Weka:
-				jpvm.pvm_send(buf1, parent, new int[2]);
 				clusters = RegiaoUtil.CriarRegiaoWekaClusterer(inPedidos,
 						tags[1]);
 				break;
@@ -68,21 +70,24 @@ class FormarRegioes_Slave {
 				clusters = RegiaoUtil.CriarRegiaoKMeans(inPedidos, tags[1]);
 				break;
 			}
-
+			
 			byte[] ClustersByteArray = SerializationUtils
 					.ObjectToByteArray(clusters);
-
+			
 			// envia mensagem para meu pai...
 			jpvmBuffer buf = new jpvmBuffer();
 
-			buf.pack(ClustersByteArray, 0, 1);
+			buf.pack(ClustersByteArray, ClustersByteArray.length, 1);
 
-			jpvm.pvm_send(buf, parent, EnPVMResult.Sucesso.GetCodigo());
+			jpvm.pvm_send(buf, parent, ClustersByteArray.length);
 
 			// sai do jpvm
 			jpvm.pvm_exit();
-		} catch (jpvmException jpe) {
-			System.out.println("Error - jpvm exception");
+		} catch (Throwable thr) {			
+			StringWriter errors = new StringWriter();
+			thr.printStackTrace(new PrintWriter(errors));
+			JOptionPane.showMessageDialog(null, errors.toString());
+			//System.out.println("Error - jpvm exception");
 		}
 	}
 };

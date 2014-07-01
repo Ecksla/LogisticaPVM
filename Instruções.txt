@@ -1,4 +1,4 @@
-cd C:\Users\f0fp229\Desktop\LogisticaPVM-master\bin
+cd C:\Users\Oeckslers\Desktop\LogisticaPVM\trunk\bin
 set classpath=.
 
 start java jpvm.jpvmDaemon
