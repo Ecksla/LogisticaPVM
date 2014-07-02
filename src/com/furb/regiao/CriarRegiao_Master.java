@@ -49,7 +49,7 @@ public class CriarRegiao_Master {
 				jpvmBuffer buf = new jpvmBuffer();
 				byte[] arrayByte = SerializationUtils
 						.ObjectArrayToByteArray(pedidos);
-				int asdf = arrayByte.length;
+				
 				buf.pack(arrayByte, arrayByte.length, 1);
 
 				int[] tags = new int[3];
@@ -65,14 +65,22 @@ public class CriarRegiao_Master {
 
 			Dataset[] dsKMeans = null;
 			Dataset[] dsWeka = null;
-
+			
+			int[][] valorFreteRegioes = new int[2][numRegioes];
 			for (int i = 0; i < tids.length; i++) {
 				// recebe uma mensagem...
 				jpvmMessage message = jpvm.pvm_recv();
-				byte[] byteArray = new byte[message.messageTag];
+				
+				int[] tagsfrete = message.messageTagArray;
+				
+				byte[] byteArray = new byte[tagsfrete[0]];
 
 				message.buffer.unpack(byteArray, byteArray.length, 1);
-
+				
+				for (int j = 0; j < valorFreteRegioes[i].length; j++) {
+					valorFreteRegioes[i][j] = tagsfrete[j+1];
+				}
+				
 				switch (EnAlgoritimo.GetByIndex(i)) {
 				case KMeans:
 					dsKMeans = (Dataset[]) SerializationUtils
@@ -85,19 +93,15 @@ public class CriarRegiao_Master {
 				default:
 					dsKMeans = (Dataset[]) SerializationUtils
 							.ByteArrayToObject(byteArray);
-					chartKMeans = ChartFactory.createScatterPlot(
-							"KMeans Clustering", "X", "Y",
-							RegiaoUtil.DataSetToXYSeriesCollection(dsKMeans));
-
 					break;
 				}
 			}
 
 			chartWeka = ChartFactory.createScatterPlot("Weka Clustering", "X",
-					"Y", RegiaoUtil.DataSetToXYSeriesCollection(dsWeka));
+					"Y", RegiaoUtil.DataSetToXYSeriesCollection(dsWeka, valorFreteRegioes[0]));
 
 			chartKMeans = ChartFactory.createScatterPlot("KMeans Clustering",
-					"X", "Y", RegiaoUtil.DataSetToXYSeriesCollection(dsKMeans));
+					"X", "Y", RegiaoUtil.DataSetToXYSeriesCollection(dsKMeans, valorFreteRegioes[1]));
 
 			JFrame frame = new JFrame("Chart");
 			frame.getContentPane().add(new ChartPanel(chartKMeans),
@@ -137,31 +141,5 @@ public class CriarRegiao_Master {
 		return dsFinal;
 	}
 
-	public Regiao[] CriarRegioes(Dataset[] ds, Pedido[] pedidos) {
-		Regiao[] regioes = new Regiao[ds.length];
-		Regiao tempReg;
-		Pedido tempPed;
-
-		for (int i = 0; i < ds.length; i++) {
-			tempReg = new Regiao("Região " + (i + 1));
-
-			DefaultDataset defaultDataset = ((DefaultDataset) ds[i]);
-
-			for (int j = 0; j < defaultDataset.size(); j++) {
-				DenseInstance denseInst = (DenseInstance) defaultDataset
-						.elementAt(j);
-				tempPed = PedidoUtil.findPedido(
-						Integer.parseInt(denseInst.classValue().toString()),
-						pedidos);
-
-				if (tempPed != null) {
-					tempReg.addPedido(tempPed);
-				}
-			}
-			
-			regioes[i] = tempReg;
-		}
-		
-		return regioes;
-	}
+	
 }

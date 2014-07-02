@@ -20,14 +20,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 import weka.clusterers.XMeans;
 
 import com.furb.pedido.Pedido;
+import com.furb.pedido.PedidoUtil;
+import com.furb.regiao.Regiao;
 
 public class RegiaoUtil {
 	
 	public static XYSeriesCollection DataSetToXYSeriesCollection(
-			Dataset[] dataset) {
+			Dataset[] dataset, int[] frete) {
 		XYSeriesCollection result = new XYSeriesCollection();
 		for (int i = 0; i < dataset.length; i++) {
-			XYSeries series = new XYSeries("Região " + (i + 1));
+			XYSeries series = new XYSeries("Reg." + (i + 1) + "(R$" + frete[i]);
 
 			DefaultDataset defaultDataset = ((DefaultDataset) dataset[i]);
 			for (int j = 0; j < defaultDataset.size(); j++) {
@@ -72,6 +74,34 @@ public class RegiaoUtil {
 		return baos.toByteArray();
 	}
 
+	public static Regiao[] CriarRegioes(Dataset[] ds, Pedido[] pedidos) {
+		Regiao[] regioes = new Regiao[ds.length];
+		Regiao tempReg;
+		Pedido tempPed;
+
+		for (int i = 0; i < ds.length; i++) {
+			tempReg = new Regiao("Região " + (i + 1));
+
+			DefaultDataset defaultDataset = ((DefaultDataset) ds[i]);
+
+			for (int j = 0; j < defaultDataset.size(); j++) {
+				DenseInstance denseInst = (DenseInstance) defaultDataset
+						.elementAt(j);
+				tempPed = PedidoUtil.findPedido(
+						Integer.parseInt(denseInst.classValue().toString()),
+						pedidos);
+
+				if (tempPed != null) {
+					tempReg.addPedido(tempPed);
+				}
+			}
+			
+			regioes[i] = tempReg;
+		}
+		
+		return regioes;
+	}
+	
 	public static Dataset[] CriarRegiaoWekaClusterer(InputStream pedidos,
 			int numClusters) {
 

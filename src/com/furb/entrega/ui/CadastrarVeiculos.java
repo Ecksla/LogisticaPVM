@@ -34,7 +34,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.furb.entrega.Entrega_jomp;
 import com.furb.entrega.ui.table.PedidoTableModel;
 import com.furb.pedido.Pedido;
 import com.furb.produto.Produto;
@@ -298,7 +297,7 @@ public class CadastrarVeiculos extends JFrame {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				Entrega_jomp.efetuarEntrega_jomp(getCadastrarVeiculos().getListaVeiculos());
+				
 				getCadastrarVeiculos().dispose();
 			}
 		});

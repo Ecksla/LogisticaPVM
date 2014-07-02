@@ -39,8 +39,7 @@ public class Mock {
 			
 			//adiciona os produtos sequencialmente na lista de produtos do pedido.
 			for(int j = 0; j < 3; j++){
-				//listProduto.add(LoadProdutos.getInstance().getProdutoSequencial(j));
-				
+				listProduto.add(LoadProdutos.getInstance().getProduto());				
 			}
 			
 			temp.setListaProdutos(listProduto);

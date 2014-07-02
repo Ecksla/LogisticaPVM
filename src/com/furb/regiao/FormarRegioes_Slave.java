@@ -44,8 +44,8 @@ class FormarRegioes_Slave {
 
 			message.buffer.unpack(byteArray, tags[2], 1);
 
-			jpvmBuffer buf1 = new jpvmBuffer();
-			buf1.pack("byteArray: " + byteArray.length + ",tags[1]: " + tags[2]);
+//			jpvmBuffer buf1 = new jpvmBuffer();
+//			buf1.pack("byteArray: " + byteArray.length + ",tags[1]: " + tags[2]);
 
 			Dataset[] clusters = null;
 
@@ -71,6 +71,36 @@ class FormarRegioes_Slave {
 				break;
 			}
 			
+			Regiao[] regioes = RegiaoUtil.CriarRegioes(clusters, pedidos);
+			
+			// distribui o trabalho...
+			jpvmTaskId tids[] = new jpvmTaskId[regioes.length];
+			
+			jpvm.pvm_spawn("com.furb.frete.CalcularFrete_Slave",
+					regioes.length, tids);
+			for (int i = 0; i < regioes.length; i++) {
+				jpvmBuffer buf = new jpvmBuffer();
+				byte[] arrayByte = SerializationUtils
+						.ObjectArrayToByteArray(regioes[i].getArrayPedidos());
+				
+				buf.pack(arrayByte, arrayByte.length, 1);
+
+				jpvm.pvm_send(buf, tids[i], arrayByte.length);
+			}
+			
+			int freteRegioes[] = new int[regioes.length];
+			
+			for (int i = 0; i < regioes.length; i++) {
+				// recebe uma mensagem...
+				jpvmMessage messageFrete = jpvm.pvm_recv();
+				
+				EnPVMResult status = EnPVMResult.ObterPorCodigo(messageFrete.messageTag);
+				
+				if(status == EnPVMResult.Sucesso){
+					freteRegioes[i] += messageFrete.buffer.upkfloat();
+				}				
+			}
+						
 			byte[] ClustersByteArray = SerializationUtils
 					.ObjectToByteArray(clusters);
 			
@@ -78,8 +108,15 @@ class FormarRegioes_Slave {
 			jpvmBuffer buf = new jpvmBuffer();
 
 			buf.pack(ClustersByteArray, ClustersByteArray.length, 1);
-
-			jpvm.pvm_send(buf, parent, ClustersByteArray.length);
+			
+			int[] tagsFrete = new int[freteRegioes.length + 1];
+			tagsFrete[0] =ClustersByteArray.length;
+			
+			for (int i = 1; i < tagsFrete.length; i++) {
+				tagsFrete[i] = freteRegioes[i-1];
+			}
+			
+			jpvm.pvm_send(buf, parent, tagsFrete);
 
 			// sai do jpvm
 			jpvm.pvm_exit();

@@ -161,6 +161,6 @@ public class Pedido extends Thread implements Serializable {
 	@Override
 	public String toString() {
 		return "Pedido [codigo=" + codigo + ", X=" + coordX + ", coordY="
-				+ coordY + "]";
+				+ coordY + ", listaProdutos=" + (Pedido[])listaProdutos.toArray() + "]";
 	}
 }

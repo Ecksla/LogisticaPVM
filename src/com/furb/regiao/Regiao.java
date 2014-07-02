@@ -2,6 +2,7 @@ package com.furb.regiao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,10 @@ public class Regiao implements Serializable {
 
 	public List<Pedido> getPedidos(){
 		return this.pedidos;
+	}
+	
+	public Pedido[] getArrayPedidos(){
+		return Arrays.copyOf(this.pedidos.toArray(), this.pedidos.toArray().length, Pedido[].class);		 
 	}
 
 	public int CalcularNumFrotaNecessaria(int numDiasUteis, int periodoAtendimento) {

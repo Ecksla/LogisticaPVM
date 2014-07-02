@@ -2,6 +2,8 @@ package com.furb.produto;
 
 import java.io.Serializable;
 
+import com.furb.pedido.Pedido;
+
 public class Produto implements Serializable {
 	/**
 	 * 
@@ -73,5 +75,10 @@ public class Produto implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Produto [peso=" + peso + ", altura=" + altura + ", largura="
+				+ largura + "]";
+	}
 }
