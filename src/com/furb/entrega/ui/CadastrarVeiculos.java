@@ -1,6 +1,5 @@
 package com.furb.entrega.ui;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -30,10 +29,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import main.Main;
+
+import com.furb.entrega.ControlaEntrega;
 import com.furb.entrega.ui.table.PedidoTableModel;
 import com.furb.pedido.Pedido;
 import com.furb.produto.Produto;
@@ -140,6 +141,7 @@ public class CadastrarVeiculos extends JFrame {
 					}
 
 					cbPedido.addItem(pedido);
+
 					contadorCodPedido++;
 					lblCodPedido.setText(String.valueOf(contadorCodPedido));
 					contadorCodProduto = 1;
@@ -297,7 +299,8 @@ public class CadastrarVeiculos extends JFrame {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				
+				ControlaEntrega controlaEntrega = new ControlaEntrega(getCadastrarVeiculos().getListaVeiculos());
+				controlaEntrega.executaEscravos();
 				getCadastrarVeiculos().dispose();
 			}
 		});
@@ -320,44 +323,49 @@ public class CadastrarVeiculos extends JFrame {
 																		.addComponent(lblPedido, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
 														.addGap(87)
 														.addGroup(
-																gl_panelVeiculos
-																		.createParallelGroup(Alignment.LEADING)
-																		.addComponent(cbPedido, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(cbCombustivel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																		.addGroup(
-																				gl_panelVeiculos.createParallelGroup(Alignment.TRAILING, false)
-																						.addComponent(cbMotorista, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																						.addComponent(ftfPlaca, Alignment.LEADING))))
+																gl_panelVeiculos.createParallelGroup(Alignment.LEADING, false)
+																		.addComponent(cbCombustivel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(cbMotorista, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(ftfPlaca)
+																		.addComponent(cbTipo, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(cbPedido, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 										.addGroup(
-												gl_panelVeiculos.createSequentialGroup().addComponent(btnCadVeiculo).addPreferredGap(ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+												gl_panelVeiculos.createSequentialGroup().addComponent(btnCadVeiculo).addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
 														.addComponent(chckbxDemonstrao).addGap(18).addComponent(btnOk))).addContainerGap()));
-		gl_panelVeiculos.setVerticalGroup(gl_panelVeiculos.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panelVeiculos
-						.createSequentialGroup()
-						.addGap(5)
-						.addGroup(
-								gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblTipo))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblCombustvel)
-										.addComponent(cbCombustivel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblPlaca)
-										.addComponent(ftfPlaca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblMotorista)
-										.addComponent(cbMotorista, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panelVeiculos.createParallelGroup(Alignment.LEADING).addGroup(gl_panelVeiculos.createSequentialGroup().addGap(3).addComponent(lblPedido))
-										.addComponent(cbPedido, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
-						.addGroup(gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(btnOk).addComponent(btnCadVeiculo).addComponent(chckbxDemonstrao)).addContainerGap()));
-		gl_panelVeiculos.linkSize(SwingConstants.HORIZONTAL, new Component[] { cbTipo, ftfPlaca });
+		gl_panelVeiculos.setVerticalGroup(gl_panelVeiculos.createParallelGroup(Alignment.LEADING)
+				.addGroup(
+						gl_panelVeiculos
+								.createSequentialGroup()
+								.addGap(5)
+								.addGroup(
+										gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblTipo))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(
+										gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblCombustvel)
+												.addComponent(cbCombustivel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(
+										gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblPlaca)
+												.addComponent(ftfPlaca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(
+										gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(lblMotorista)
+												.addComponent(cbMotorista, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(
+										gl_panelVeiculos
+												.createParallelGroup(Alignment.LEADING)
+												.addGroup(
+														gl_panelVeiculos
+																.createSequentialGroup()
+																.addGap(9)
+																.addComponent(lblPedido)
+																.addPreferredGap(ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
+																.addGroup(
+																		gl_panelVeiculos.createParallelGroup(Alignment.BASELINE).addComponent(btnOk).addComponent(btnCadVeiculo)
+																				.addComponent(chckbxDemonstrao)))
+												.addGroup(
+														gl_panelVeiculos.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(cbPedido, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
 		panelVeiculo.setLayout(gl_panelVeiculos);
 		contentPane.setLayout(gl_contentPane);
 
