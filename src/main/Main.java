@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import net.sf.javaml.core.Dataset;
 
+import com.furb.entrega.ui.OpcoesEntrada;
 import com.furb.frota.CalcularFrota_Master;
 import com.furb.pedido.Pedido;
 import com.furb.regiao.CriarRegiao_Master;
@@ -67,7 +68,7 @@ public class Main {
 				case 3:
 					break;
 				case 4:
-					// new OpcoesEntrada();
+					 new OpcoesEntrada();
 					break;
 				case 666:
 					sair = true;
