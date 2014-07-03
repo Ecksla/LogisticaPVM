@@ -302,6 +302,8 @@ public class CadastrarVeiculos extends JFrame {
 				ControlaEntrega controlaEntrega = new ControlaEntrega(getCadastrarVeiculos().getListaVeiculos());
 				controlaEntrega.executaEscravos();
 				getCadastrarVeiculos().dispose();
+
+				System.out.println("\n" + Main.getTxtIni());
 			}
 		});
 
